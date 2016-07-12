@@ -401,10 +401,11 @@ void DrawShipStatusScreen()
       Text::DisplayText( PlayerShip->crewCharArray, 66, 8, false);
       Text::DisplayText( "/", 80, 8, false );
       Text::DisplayText( PlayerShip->maxCrewCharArray, 86, 8, false );
-      DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, (float) PlayerShip->HP_Hull / PlayerShip->Max_Hull );
-      DrawStatusBar( StatusBarX, 22, PlayerShip->Max_Weapons, 4, (float) PlayerShip->HP_Weapons / PlayerShip->Max_Weapons );
-      DrawStatusBar( StatusBarX, 29, PlayerShip->Max_Shields, 4, (float) PlayerShip->HP_Shields / PlayerShip->Max_Shields );
-      DrawStatusBar( StatusBarX, 36, PlayerShip->Max_Engine, 4, (float) PlayerShip->HP_Engine / PlayerShip->Max_Engine );
+//      DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, (float) PlayerShip->HP_Hull / PlayerShip->Max_Hull );
+      DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, 100 * PlayerShip->HP_Hull / PlayerShip->Max_Hull );
+      DrawStatusBar( StatusBarX, 22, PlayerShip->Max_Weapons, 4, 100 * PlayerShip->HP_Weapons / PlayerShip->Max_Weapons );
+      DrawStatusBar( StatusBarX, 29, PlayerShip->Max_Shields, 4, 100 * PlayerShip->HP_Shields / PlayerShip->Max_Shields );
+      DrawStatusBar( StatusBarX, 36, PlayerShip->Max_Engine, 4, 100 * PlayerShip->HP_Engine / PlayerShip->Max_Engine );
 //      DrawStatusBar( StatusBarX, 43, PlayerShip->Max_Fuel, 4, (float) PlayerShip->Fuel / PlayerShip->Max_Fuel );
       Text::DisplayText( PlayerShip->fuelCharArray, StatusBarX, 43, false );
 //      Text::DisplayText( PlayerShip->goodsCharArray, 114, 8, false);
@@ -824,10 +825,13 @@ void GenerateReward( Loot reward )
 }
 
 
-static void DrawStatusBar( int x, int y, int length, int height, float fill )
+//static void DrawStatusBar( int x, int y, int length, int height, float fill )  // To save about 100 bytes
+static void DrawStatusBar( int x, int y, int length, int height, int fill )
 {
   length *= 2;
-  int fillTo = x + ceil( fill * length );
+//  int fillTo = x + ceil( fill * length );
+    int fillTo = x + floor( fill * length / 100.0f );
+//  int fillTo = x + floor( length / fill );
   for ( int i(0); i < height; i++ )
   {
     int xOffset = abs( height - ( ceil( height / 2.0f ) + i ) );
