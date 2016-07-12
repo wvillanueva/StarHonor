@@ -1,6 +1,6 @@
 #include "Globals.h"
 
-ArduboyCustom arduboy;
+Arduboy2Base arduboy;
 
 //int FPS = 60;
 float LastUpdateTime = 0;

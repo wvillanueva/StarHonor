@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include "ArduboyCustom.h"
+#include <Arduboy2.h>
 #include "bitmaps.h"
 #include "Vector2d.h"
 
-#define PI 3.14159265
+//#define PI 3.14159265
 
-extern ArduboyCustom arduboy;
+extern Arduboy2Base arduboy;
 
 //extern int FPS;
 extern float LastUpdateTime;

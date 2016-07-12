@@ -1,7 +1,7 @@
 
 #include <SPI.h>
 #include <EEPROM.h>
-#include "ArduboyCustom.h"
+#include <Arduboy2.h>
 #include "Globals.h"
 #include "GUI.h"
 #include "StarField.h"
@@ -22,7 +22,7 @@ void setup() {
   #endif
   MilliPerFrame = 1000.0f / 60.0f;
 
-  arduboy.start();
+  arduboy.boot();
   arduboy.display();
   arduboy.initRandomSeed();
 
@@ -63,7 +63,7 @@ void loop()
   DeltaTime = ( millis() - LastUpdateTime ) / 1000.0f;
   LastUpdateTime = millis();
   
-  arduboy.clearDisplay();
+  arduboy.clear();
 //  AbPrinter text(arduboy);
 //  text.print("Hello");
   GetInput();

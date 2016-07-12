@@ -1,5 +1,5 @@
 #include "Vector2d.h"
-#include "ArduboyCustom.h"
+#include <Arduboy2.h>
 
 //#define Deg2Rad( Deg ) { Deg * PI / 180 };
 
