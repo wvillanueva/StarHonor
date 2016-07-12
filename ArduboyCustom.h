@@ -2,7 +2,7 @@
 #define Arduboy_h
 
 #include "coreCustom.h"
-#include "ab_printer.h"
+//#include "ab_printer.h"
 #include <Print.h>
 #include <limits.h>
 
@@ -21,7 +21,7 @@
 #define EEPROM_STORAGE_SPACE_START 16 // and onward
 
 // eeprom settings above are neded for audio
-#include "audio/audio.h"
+//#include "audio/audio.h"
 
 #define PIXEL_SAFE_MODE
 
@@ -178,7 +178,7 @@ public:
   /// Swap the references of two pointers.
   void swap(int16_t& a, int16_t& b);
 
-  ArduboyAudio audio;
+//  ArduboyAudio audio;
 
   void setFrameRate(uint8_t rate);
   bool nextFrame();

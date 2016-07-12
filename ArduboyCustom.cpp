@@ -1,6 +1,6 @@
 #include "ArduboyCustom.h"
-#include "glcdfont.c"
-#include "ab_logo.c"
+//#include "glcdfont.c"
+//#include "ab_logo.c"
 
 ArduboyCustom::ArduboyCustom()
 {
@@ -55,7 +55,7 @@ void ArduboyCustom::bootLogo()
     setRGBled(24-y, 0, 0);
 
     clear();
-    drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
+//    drawBitmap(20,y, arduboy_logo, 88, 16, WHITE);
     display();
     delay(27);
     // longer delay post boot, we put it inside the loop to
@@ -681,47 +681,47 @@ void ArduboyCustom::drawSlowXYBitmap
 }
 
 
-void ArduboyCustom::drawChar
-(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
-{
-  boolean draw_background = bg != color;
-
-  if ((x >= WIDTH) ||         // Clip right
-    (y >= HEIGHT) ||        // Clip bottom
-    ((x + 5 * size - 1) < 0) ||   // Clip left
-    ((y + 8 * size - 1) < 0)    // Clip top
-  )
-  {
-    return;
-  }
-
-  for (int8_t i=0; i<6; i++ )
-  {
-    uint8_t line;
-    if (i == 5)
-    {
-      line = 0x0;
-    }
-    else
-    {
-      line = pgm_read_byte(font+(c*5)+i);
-    }
-
-    for (int8_t j = 0; j<8; j++)
-    {
-      uint8_t draw_color = (line & 0x1) ? color : bg;
-
-      if (draw_color || draw_background) {
-        for (uint8_t a = 0; a < size; a++ ) {
-          for (uint8_t b = 0; b < size; b++ ) {
-            drawPixel(x + (i * size) + a, y + (j * size) + b, draw_color);
-          }
-        }
-      }
-      line >>= 1;
-    }
-  }
-}
+//void ArduboyCustom::drawChar
+//(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
+//{
+//  boolean draw_background = bg != color;
+//
+//  if ((x >= WIDTH) ||         // Clip right
+//    (y >= HEIGHT) ||        // Clip bottom
+//    ((x + 5 * size - 1) < 0) ||   // Clip left
+//    ((y + 8 * size - 1) < 0)    // Clip top
+//  )
+//  {
+//    return;
+//  }
+//
+//  for (int8_t i=0; i<6; i++ )
+//  {
+//    uint8_t line;
+//    if (i == 5)
+//    {
+//      line = 0x0;
+//    }
+//    else
+//    {
+//      line = pgm_read_byte(font+(c*5)+i);
+//    }
+//
+//    for (int8_t j = 0; j<8; j++)
+//    {
+//      uint8_t draw_color = (line & 0x1) ? color : bg;
+//
+//      if (draw_color || draw_background) {
+//        for (uint8_t a = 0; a < size; a++ ) {
+//          for (uint8_t b = 0; b < size; b++ ) {
+//            drawPixel(x + (i * size) + a, y + (j * size) + b, draw_color);
+//          }
+//        }
+//      }
+//      line >>= 1;
+//    }
+//  }
+//}
 
 void ArduboyCustom::display()
 {
