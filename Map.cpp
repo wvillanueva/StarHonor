@@ -3,18 +3,7 @@
 Planetoid** Planets;
 Planetoid* LatestPlanetEncountered;
 const int PROGMEM PlanetsPerMap = 10;
-//int ShipsPerMap = 1;
 
-//const unsigned char* PlanetArt1 = Planet_1_16_16;
-//const unsigned char* PlanetArt2 = Planet_2_16_16;
-//const unsigned char* PlanetArt3 = Planet_3_16_16;
-//const unsigned char* PlanetArt4 = Planet_4_16_16;
-//const unsigned char* PlanetArt5 = Planet_5_16_16;
-//const unsigned char* PlanetArt6 = Planet_6_16_16;
-//const unsigned char* PlanetArt7 = Planet_7_16_16;
-//const unsigned char* PlanetArt8 = Planet_8_16_16;
-//const unsigned char* PlanetArt9 = Planet_9_16_16;
-//const unsigned char* PlanetArt10 = Planet_10_16_16;
 const unsigned char* PlanetArt[] { Planet_1_16_16, Planet_2_16_16, Planet_3_16_16, Planet_4_16_16, Planet_5_16_16, Planet_6_16_16, Planet_7_16_16, Planet_8_16_16, Planet_9_16_16 , Planet_10_16_16 };
 
 void InitializePlanetsArray()
@@ -34,7 +23,6 @@ void NewMap()
   
   for ( int i(0); i < PlanetsPerMap; i++ )
   {
-//    Planets[i] = new Planetoid();
     Vector2d randPos = RandomMapPosition();
     Planets[i]->MapPosition->x = randPos.x;
     Planets[i]->MapPosition->y = randPos.y;
@@ -50,7 +38,6 @@ void NewMap()
     
     Planets[i]->Attack = CurrentSector + random( 1, 3 ) + 3;
     Planets[i]->Defense = CurrentSector + random( 3, 5 ) + 3;
-//    if ( fuel > 0 && Planets[i]->Alignment > 0 )
     if ( fuel > 0 )
     {
       Planets[i]->Prize = LootFuel;
@@ -60,41 +47,15 @@ void NewMap()
       Planets[i]->Prize = static_cast<Loot>( rand() % 7 );
     Planets[i]->Contacted = false;
   }
-
-  //CreateEnemyShips( ShipsPerMap );
 }
 
 void DeleteMap()
 {
   LatestPlanetEncountered = NULL;
-//    for ( int i( PlanetsPerMap - 1 ); i >= 0; i-- )
-  for ( int i( 0 ); i < PlanetsPerMap; i++ )
-  {
-//    delete(Planets[i]->MapPosition);
-//    delete(Planets[i]);
-  }
 }
-
-//void CreateEnemyShips( int count )
-//{
-//  if ( EnemyShips != NULL )
-//  {
-//    for ( int i( count - 1 ); i >= 0; i-- )
-//      delete(EnemyShips[i]);
-//    delete(EnemyShips);
-//  }
-//  EnemyShips = new Ship*[count];
-//  for ( int i(0); i < count; i++ )
-//  {
-//    EnemyShips[i] = new Ship();
-//    Ship::SetupShip( EnemyShips[i], false );
-//    EnemyShips[i]->MapPosition = RandomMapPosition();
-//  }
-//}
 
 Vector2d RandomMapPosition()
 {
-//  return new Vector2d( random( MapUpperBounds->x + 16, MapLowerBounds->x - 16), random ( MapUpperBounds->y + 16, MapLowerBounds->y - 16 ) );
   Vector2d pos;
   pos.x = random( MapUpperBounds->x + 16, MapLowerBounds->x - 16);
   pos.y = random ( MapUpperBounds->y + 16, MapLowerBounds->y - 16 );
@@ -103,21 +64,6 @@ Vector2d RandomMapPosition()
 
 void MapLoop()
 {
-//  for ( int i(0); i < ShipsPerMap; i++ )
-//  {
-//    EnemyShips[i]->Update();
-//    EnemyShips[i]->DrawOnMap();
-//    if ( EnemyShips[i]->IsAlive )
-//      NextSector = false;
-//  }
-//  
-//  if ( NextSector )
-//  {
-////    ShipsPerMap++;
-//    NewMap();
-//    return;
-//  }
-  
   if ( AButton )
   {
     ChangeGameState( Status );
@@ -156,8 +102,6 @@ void DrawMap()
       }
     }
   }
-
-//  DrawMarkers();
 }
 
 void DrawMarkers()

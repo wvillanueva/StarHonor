@@ -23,7 +23,6 @@ class SelectionArrow
   public:
   int NumberOfPositions;
   int Position;
-//  SelectionType Type;
   SelectionLocation* CurrentSelection;
   SelectionLocation* FirstLocation;
   
@@ -37,8 +36,6 @@ class SelectionArrow
   void SelectionMoveDown();
 
   void Enable( bool e );
-//  void SetBoxType();
-//  void SetArrowType();
   
 //  private:
   bool _Enabled;

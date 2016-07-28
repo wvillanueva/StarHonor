@@ -1,7 +1,6 @@
 #include "Ship.h"
 
 Ship* PlayerShip;
-//Ship** EnemyShips;
 
 float DiagonalVelocity = 1.41421f;
 
@@ -12,21 +11,17 @@ const unsigned char* PlayerBitMaps[] { ArduShip_TD_Up_16_16, ArduShip_TD_UpRight
 Ship::Ship()
 {
   IsAlive = true;
-//  ShipRotation = 90;
   Velocity = new Vector2d( 0, 0 );
   MapPosition = new Vector2d( 0, 0 );
-//  NavFocus = new Vector2d( 0, 0 );
 }
 
 Ship::~Ship()
 {
-//  delete( NavFocus );
   delete( MapPosition );
   delete( Velocity );
   delete[] crewCharArray;
   delete[] fuelCharArray;
   delete[] maxCrewCharArray;
-//  delete[] goodsCharArray;
 }
 
 void Ship::SetupShip( Ship* s )
@@ -41,10 +36,7 @@ void Ship::SetupShip( Ship* s )
   s->HP_Engine = 5;
   s->MaxVelocity = s->HP_Engine + 5;
   s->Fuel = 0;
-//    s->Food = 5;
-//    s->Fuel = 300;
   s->Crew = 33;
-//    s->Inv_Goods = 0;
   s->BitMap = ArduShip_TD_Right_16_16;
     
   s->Max_Hull = s->HP_Hull;
@@ -53,18 +45,11 @@ void Ship::SetupShip( Ship* s )
   s->Max_Shields = s->HP_Shields;
   s->Max_Crew = s->Crew;
   s->Max_Fuel = 25;
-//  s->Max_Food = s->Food;
 
   s->Velocity->x = s->Velocity->y = 0;
   s->MapPosition->x = s->MapPosition->y = 0;
-//  RepairTarget = Crew;
   RepairTarget = NoTarget;
 }
-
-//float Ship::NextRandomFireTime()
-//{
-//  return random(3.0f, 6.0f);
-//}
 
 // Applies damage to a ship, returns the system damaged
 SystemTarget Ship::TakeDamage( int Damage )
@@ -117,10 +102,7 @@ void Ship::DrawOnMap()
 
 void Ship::Update()
 {
-//  if ( IsPlayerShip )
-    PlayerUpdate();
-//  else
-//    AIUpdate();
+  PlayerUpdate();
 }
 
 Vector2d Ship::GetVelocity()
@@ -130,11 +112,7 @@ Vector2d Ship::GetVelocity()
 
 //typedef enum { Up, UpRight, Right, DownRight, Down, DownLeft, Left, UpLeft, None } Direction;
 void Ship::PlayerUpdate()
-{
-//  byte input = 1 << DPad;
-//  byte left = 1 << UpLeft | 1 << Left | 1 << DownLeft;
-//  byte right = 1 << UpRight | 1 << Right | 1 << DownRight;
-  
+{  
   // Be clever and arrange the enums so you can do a bit mask?
   if ( DPad == UpLeft || DPad == Left || DPad == DownLeft )
   {
@@ -176,14 +154,7 @@ void Ship::PlayerUpdate()
       TimeUntilNextRepair = RepairTime;// + ( RepairTime * 10 - RepairTime * 10 * Crew / Max_Crew );
       RepairSystem();
     }
-//    TimeToNextRandomEncounter -= DeltaTime;
   }
-
-//  AbPrinter text(arduboy);
-//  text.setCursor(0, 24);
-//  text.print(this->MapPosition->x);
-//  text.setCursor(32, 24);
-//  text.print(this->MapPosition->y);
 }
 
 void Ship::UpdateMovement( Vector2d thrust )
@@ -223,8 +194,6 @@ Vector2d Ship::CalcThrust( Direction dir )
 {
   Vector2d thrust;
   thrust.x = 0;
-//  thrust.y = -1;
-//  thrust.y = -0.5f - ( HP_Engine / 10.0f );
   thrust.y = -0.2f - HP_Engine / 3.0f;
   int rotation = static_cast<int>( dir ) * 45;
   thrust.Rotate( rotation );
@@ -277,14 +246,8 @@ int Ship::Upgrade( Loot Upgrade )
     case LootFuel:
       UpgradeAmount = 1;
       Fuel += UpgradeAmount;
-//      Fuel = min( Max_Fuel, Fuel );
       return UpgradeAmount;
     break;
-//    case LootGoods:
-//      UpgradeAmount *= 2;
-//      Inv_Goods += UpgradeAmount;
-//      return UpgradeAmount;
-//    break;
   }
   return 0;
 }
@@ -295,7 +258,7 @@ void Ship::RepairSystem()
   
   bool existingUpdate = StatusUpdateAvailable;
   SystemTarget systemTargeted = RepairTarget;
-  //typedef enum SystemTarget { Crew, Hull, Weapons, Engines, Shields };
+  
   switch (RepairTarget)
   {
     
@@ -354,8 +317,6 @@ void Ship::RepairSystem()
   if ( !existingUpdate && StatusUpdateAvailable )
   {
     StatusUpdateTime = 240;
-    //typedef enum SystemTarget { Crew, Hull, Weapons, Engines, Shields };
-    //const char* RepairedText[] { RedShirtsRepaired, HullRepaired, WeaponsRepaired, EnginesRepaired, ShieldsRepaired };
     Status_Update = (char *) RepairedText[systemTargeted];
     StatusUpdateFromProgMem = true;
   }
