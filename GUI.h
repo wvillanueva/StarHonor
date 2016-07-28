@@ -12,7 +12,6 @@ extern Vector2d** CombatLocations;
 extern int _StatusBarIndent;
 
 extern SelectionArrow* RepairSelectionArrow;
-//extern SelectionArrow* AuxSelectionArrow;
 extern SelectionArrow* CurrentSelectionArrow;
 extern SelectionArrow* CombatSelectionArrow;
 

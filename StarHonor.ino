@@ -11,12 +11,12 @@
 
 #define Debug 0
 
+// To decompile the elf and sort by function size:
 // avr-nm --size-sort -C -r ./VoyageHome.ino.elf > ~/output.txt
 
 StarField* _StarField;
 
 void setup() {
-  // put your setup code here, to run once:
   #if Debug
     Serial.begin(9600);
   #endif
@@ -32,20 +32,16 @@ void setup() {
 
   MapUpperBounds = new Vector2d(-32, -128);
   MapLowerBounds = new Vector2d(512, 128);
-//  MapUpperBounds = new Vector2d(-128, -128);
-//  MapLowerBounds = new Vector2d(128, 128);
 
   TextManager = new Text();
+
 #if !Debug
   CreateStatusSelectionArrow();
 
   CreateCombatSelectionArrow();
 #endif
-//  CurrentStatusScreen = Overview;
-//  ChangeGameState( WinGame );
-  ChangeGameState( TitleLoop );
-//  ChangeGameState( Map );
 
+  ChangeGameState( TitleLoop );
   MenuWaitTime = 15;
 
   // Order is important to prevent Heap Fragmentation
@@ -58,14 +54,11 @@ void setup() {
 
 void loop()
 {
-//  Serial.println(MilliPerFrame);
   if ( millis() < (LastUpdateTime + MilliPerFrame) ) return;
   DeltaTime = ( millis() - LastUpdateTime ) / 1000.0f;
   LastUpdateTime = millis();
   
   arduboy.clearDisplay();
-//  AbPrinter text(arduboy);
-//  text.print("Hello");
   GetInput();
   
   switch ( GameState )
@@ -136,18 +129,14 @@ void loop()
       StatusUpdateTime = 0;
       Status_Update = NULL;
       CanHail = false;
-//      DeleteMap();
       LatestPlanetEncountered = NULL;
       ResetPlayer();
       NewMap();
       ChangeGameState( TitleLoop );
       minutes = 9;
-      seconds = 59.99;
+      seconds = 59.99f;
     break;
     case Warping:
-//      Vector2d warpVelocity;
-//      warpVelocity.x = -10;
-//      warpVelocity.y = 0;
       _StarField->Move(Vector2d(-60,0));
       _StarField->Draw();
       PlayerShip->DrawOnMap();
@@ -256,16 +245,13 @@ void ChangeGameState( State newState )
     case Prologue:
       SequenceStage = 1;
       TextManager->NewDisplayTextOverTime();
-//      GenerateRandomEncounter();
     break;
     case Map:
-//      SequenceStage = 1;
     break;
     case Status:
       Text::ConvertIntToChar( PlayerShip->Crew, PlayerShip->crewCharArray );
       Text::ConvertIntToChar( PlayerShip->Max_Crew, PlayerShip->maxCrewCharArray );
       Text::ConvertIntToChar( PlayerShip->Fuel, PlayerShip->fuelCharArray );
-//      Text::ConvertIntToChar( PlayerShip->Inv_Goods, PlayerShip->goodsCharArray );
     break;
     case Encounter:
       SetupEncounter();
@@ -287,7 +273,7 @@ void ChangeGameState( State newState )
       PlayerShip->Velocity->y = 0;
       PlayerShip->PlayerUpdate();
       PlayerShip->Fuel -= 3;
-      WaitTime = 240; // 240 frames.  Changed from float to get under 28,672
+      WaitTime = 240; // 240 frames
     break;
     case WinGame:
       SequenceStage = 1;
@@ -337,10 +323,6 @@ void ShipStatusLoop()
       CurrentSelectionArrow->SelectionMoveDown();
       AcceptMenuInput = false;
     }
-//    else if ( DPad == Right || DPad == Left )
-//    {
-//      AcceptMenuInput = false;
-//    }
     // Status Menu
     if ( AButton )
     {
@@ -351,21 +333,6 @@ void ShipStatusLoop()
     {
     }
   }
-  
-//  if ( DPad == Up && AcceptMenuInput )
-//  {
-//    CurrentSelectionArrow->SelectionMoveUp();
-//    AcceptMenuInput = false;
-//  }
-//  else if ( DPad == Down && AcceptMenuInput )
-//  {
-//    CurrentSelectionArrow->SelectionMoveDown();
-//    AcceptMenuInput = false;
-//  }
-//  else if ( ( DPad == Right || DPad == Left ) && AcceptMenuInput )
-//  {
-//    AcceptMenuInput = false;
-//  }
 
   DrawShipStatusScreen();
   CurrentSelectionArrow->Draw();
@@ -375,100 +342,94 @@ void DrawShipStatusScreen()
 {
   int StatusBarX = 66;
   int TextXPos = 10;
-//  switch ( CurrentStatusScreen )
-  {
-//    case Overview:
-      Text::DisplayText(ShipStatus, 42, 0, true);
-      Text::DisplayText(TCrew, TextXPos, 8, true);
-      Text::DisplayText(THull, TextXPos, 15, true);
-      Text::DisplayText(TWeapons, TextXPos, 22, true);
-      Text::DisplayText(TShields, TextXPos, 29, true);
-      Text::DisplayText(TEngines, TextXPos, 36, true);
-      Text::DisplayText(TFuel, TextXPos, 43, true);
-//      Text::DisplayText(TGoods, 72, 8, true);
 
-      if ( RepairTarget != NoTarget && StatusBlinkTime > 30)
-      {
-        arduboy.fillRect( TextXPos, 8 + 7 * RepairTarget, 40, 6, 0 );
-      }
-      else if (StatusBlinkTime < 0)
-        StatusBlinkTime = 60;
-      StatusBlinkTime -= 1;
+  Text::DisplayText(ShipStatus, 42, 0, true);
+  Text::DisplayText(TCrew, TextXPos, 8, true);
+  Text::DisplayText(THull, TextXPos, 15, true);
+  Text::DisplayText(TWeapons, TextXPos, 22, true);
+  Text::DisplayText(TShields, TextXPos, 29, true);
+  Text::DisplayText(TEngines, TextXPos, 36, true);
+  Text::DisplayText(TFuel, TextXPos, 43, true);
+
+  if ( RepairTarget != NoTarget && StatusBlinkTime > 30)
+  {
+    arduboy.fillRect( TextXPos, 8 + 7 * RepairTarget, 40, 6, 0 );
+  }
+  else if (StatusBlinkTime < 0)
+    StatusBlinkTime = 60;
+  StatusBlinkTime -= 1;
       
   
-//    DrawStatusBar( int x, int y, int length, int height, float fill )
-      // 27,600 -> 27,322 ...wow  Just removing the array reference with the arithmetic offset  "OverviewLocation[0].y + 2"
-      Text::DisplayText( PlayerShip->crewCharArray, 66, 8, false);
-      Text::DisplayText( "/", 80, 8, false );
-      Text::DisplayText( PlayerShip->maxCrewCharArray, 86, 8, false );
-//      DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, (float) PlayerShip->HP_Hull / PlayerShip->Max_Hull );
-      DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, 100 * PlayerShip->HP_Hull / PlayerShip->Max_Hull );
-      DrawStatusBar( StatusBarX, 22, PlayerShip->Max_Weapons, 4, 100 * PlayerShip->HP_Weapons / PlayerShip->Max_Weapons );
-      DrawStatusBar( StatusBarX, 29, PlayerShip->Max_Shields, 4, 100 * PlayerShip->HP_Shields / PlayerShip->Max_Shields );
-      DrawStatusBar( StatusBarX, 36, PlayerShip->Max_Engine, 4, 100 * PlayerShip->HP_Engine / PlayerShip->Max_Engine );
-//      DrawStatusBar( StatusBarX, 43, PlayerShip->Max_Fuel, 4, (float) PlayerShip->Fuel / PlayerShip->Max_Fuel );
-      Text::DisplayText( PlayerShip->fuelCharArray, StatusBarX, 43, false );
-//      Text::DisplayText( PlayerShip->goodsCharArray, 114, 8, false);
+  //    DrawStatusBar( int x, int y, int length, int height, float fill )
+  // 27,600 -> 27,322 ...wow  Just removing the array reference with the arithmetic offset  "OverviewLocation[0].y + 2"
+  Text::DisplayText( PlayerShip->crewCharArray, 66, 8, false);
+  Text::DisplayText( "/", 80, 8, false );
+  Text::DisplayText( PlayerShip->maxCrewCharArray, 86, 8, false );
 
-      if ( PreviousGameState == Map )
-      {
-        if ( CurrentSelectionArrow->Position == 0 )
-        {
-          Text::DisplayText( StatusHelp2, 0, 50, true );
-          if (BButton)  // Triage
-          {
-             RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
-          }
-        }
-        if ( CurrentSelectionArrow->Position > 0 && CurrentSelectionArrow->Position <= 4 )
-        {
-          Text::DisplayText( StatusHelp, 0, 50, true );
-          if (BButton)  // Repair
-          {
-            RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
-          }
-        }
-        else if ( CurrentSelectionArrow->Position == 5 )
-        {
-          Text::DisplayText( StatusHelp4, 0, 50, true );
-        }
-      }
-      else if ( PreviousGameState == Encounter )
-      {
-        if ( CurrentSelectionArrow->Position > 0 && CurrentSelectionArrow->Position <= 4 )
-        {
-          Text::DisplayText( SpendEmergencyRepairs, 0, 50, true );
-          if (BButton && BattleRepairs > 0)  // Repair
-          {
-            RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
-            int randomRepairs = random(2, 6);
-            while ( randomRepairs > 0 )
-            {
-              PlayerShip->RepairSystem();
-              randomRepairs--;
-            }
-            BattleRepairs--;
-          }
-        }
+  DrawStatusBar( StatusBarX, 15, PlayerShip->Max_Hull, 4, 100 * PlayerShip->HP_Hull / PlayerShip->Max_Hull );
+  DrawStatusBar( StatusBarX, 22, PlayerShip->Max_Weapons, 4, 100 * PlayerShip->HP_Weapons / PlayerShip->Max_Weapons );
+  DrawStatusBar( StatusBarX, 29, PlayerShip->Max_Shields, 4, 100 * PlayerShip->HP_Shields / PlayerShip->Max_Shields );
+  DrawStatusBar( StatusBarX, 36, PlayerShip->Max_Engine, 4, 100 * PlayerShip->HP_Engine / PlayerShip->Max_Engine );
 
-        // Bubbles
-        if ( BattleRepairsMax > 2 )
-          arduboy.drawBitmap(106, 58, Bubble_Empty_8_8, 8, 8, 1);
-        if ( BattleRepairsMax > 1 )
-          arduboy.drawBitmap(94, 58, Bubble_Empty_8_8, 8, 8, 1);
-        if ( BattleRepairsMax > 0 )
-          arduboy.drawBitmap(82, 58, Bubble_Empty_8_8, 8, 8, 1);
-        
-        Text::DisplayText( EmergencyRepairs, 0, 58, true );
-        
-        if ( BattleRepairs > 2 )
-          arduboy.drawBitmap(106, 58, Bubble_8_8, 8, 8, 1);
-        if ( BattleRepairs > 1 )
-          arduboy.drawBitmap(94, 58, Bubble_8_8, 8, 8, 1);
-        if ( BattleRepairs > 0 )
-          arduboy.drawBitmap(82, 58, Bubble_8_8, 8, 8, 1);
+  Text::DisplayText( PlayerShip->fuelCharArray, StatusBarX, 43, false );
+
+  if ( PreviousGameState == Map )
+  {
+    if ( CurrentSelectionArrow->Position == 0 )
+    {
+      Text::DisplayText( StatusHelp2, 0, 50, true );
+      if (BButton)  // Triage
+      {
+         RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
       }
-//    break;
+    }
+    if ( CurrentSelectionArrow->Position > 0 && CurrentSelectionArrow->Position <= 4 )
+    {
+      Text::DisplayText( StatusHelp, 0, 50, true );
+      if (BButton)  // Repair
+      {
+        RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
+      }
+    }
+    else if ( CurrentSelectionArrow->Position == 5 )
+    {
+      Text::DisplayText( StatusHelp4, 0, 50, true );
+    }
+  }
+  else if ( PreviousGameState == Encounter )
+  {
+    if ( CurrentSelectionArrow->Position > 0 && CurrentSelectionArrow->Position <= 4 )
+    {
+      Text::DisplayText( SpendEmergencyRepairs, 0, 50, true );
+      if (BButton && BattleRepairs > 0)  // Repair
+      {
+        RepairTarget = static_cast<SystemTarget>( CurrentSelectionArrow->Position );
+        int randomRepairs = random(2, 6);
+        while ( randomRepairs > 0 )
+        {
+          PlayerShip->RepairSystem();
+          randomRepairs--;
+        }
+        BattleRepairs--;
+      }
+    }
+
+    // Bubbles
+    if ( BattleRepairsMax > 2 )
+      arduboy.drawBitmap(106, 58, Bubble_Empty_8_8, 8, 8, 1);
+    if ( BattleRepairsMax > 1 )
+      arduboy.drawBitmap(94, 58, Bubble_Empty_8_8, 8, 8, 1);
+    if ( BattleRepairsMax > 0 )
+      arduboy.drawBitmap(82, 58, Bubble_Empty_8_8, 8, 8, 1);
+    
+    Text::DisplayText( EmergencyRepairs, 0, 58, true );
+    
+    if ( BattleRepairs > 2 )
+      arduboy.drawBitmap(106, 58, Bubble_8_8, 8, 8, 1);
+    if ( BattleRepairs > 1 )
+      arduboy.drawBitmap(94, 58, Bubble_8_8, 8, 8, 1);
+    if ( BattleRepairs > 0 )
+      arduboy.drawBitmap(82, 58, Bubble_8_8, 8, 8, 1);
   }
 }
 
@@ -521,14 +482,6 @@ void EncouterUpdate()
             nextSequence = 8;
       }
       break;
-    
-//    case 2: // Intro
-//      TextManager->DisplayTextClear( Comm_A_1, 0, 0, true, true );
-//      if ( TextManager->DisplayTextOverTime( Comm_B_1, 0, 55 ) || ( AButton || BButton ) )
-//      {
-//        SequenceStage++;
-//      }
-//    break;
     
     case 3: // Combat Choice
       DrawCombatScreen( true );
@@ -712,8 +665,6 @@ void DrawCombatScreen( bool DrawCommands )
   // Left Side
   arduboy.fillRect( 0, 16, 35, 24, 0 );
   arduboy.drawRect(0, 18, 35, 21, 1);
-  // static int DisplayText( char* text, int x, int y, bool fromProgMem );
-  //static int DisplayTextClear( char* text, int x, int y, bool fromProgMem, bool withBorder );
   
   Text::DisplayText(CombatMenu_Atk, 2, 20, true);
   Text::ConvertIntToChar( PlayerShip->HP_Weapons );
@@ -816,10 +767,6 @@ void GenerateReward( Loot reward )
     case LootFuel:
       index += Text::CopyIntoBuffer( TFuel, index, 7 );
     break;
-//    case LootGoods:
-//      
-//      index += Text::CopyIntoBuffer( TGoods, index, 4 );
-//    break;
   }
   typeBuffer[index] = '\0';
 }
@@ -829,9 +776,8 @@ void GenerateReward( Loot reward )
 static void DrawStatusBar( int x, int y, int length, int height, int fill )
 {
   length *= 2;
-//  int fillTo = x + ceil( fill * length );
-    int fillTo = x + floor( fill * length / 100.0f );
-//  int fillTo = x + floor( length / fill );
+  int fillTo = x + floor( fill * length / 100.0f );
+  
   for ( int i(0); i < height; i++ )
   {
     int xOffset = abs( height - ( ceil( height / 2.0f ) + i ) );
@@ -856,8 +802,6 @@ static void DrawStatusBar( int x, int y, int length, int height, int fill )
 
 void ResetPlayer()
 {
-//  delete( PlayerShip );
-//  PlayerShip = new Ship();
   Ship::SetupShip( PlayerShip );
   TimeUntilNextRepair = RepairTime;
 }
@@ -962,24 +906,13 @@ void GameOverLoop( int ending )
   }
 }
 
-//void GenerateRandomEncounter()
-//{
-//  TimeToNextRandomEncounter = random( 10, 20 );
-//  ShipEncountered->Attack = 1;
-//  ShipEncountered->Defense = 1;
-//  ShipEncountered->Prize = static_cast<Loot>( rand() % 7 );
-//}
-
 void SetupSectorReachedText()
 {
   StatusUpdateTime = 240;
-//  int index = 0;
   StatusUpdateAvailable = true;
   StatusUpdateFromProgMem = false;
   Text::CopyIntoBuffer( SectorReachedA, 0, 16 );
-//  index = 15;
   Text::ConvertIntToChar( 60 + random( 1, 10 )  - ( CurrentSector * 10 ), typeBuffer, 16 );
-//  index = 17;
   typeBuffer[18] = '\0';
   Status_Update = typeBuffer;
 }
@@ -1025,7 +958,6 @@ void ClockUpdate( bool runnning )
  * Random encounters
  * Random space debris
  * Not all Planets are encounters
- * Crew for emergency repairs
  * 
  *  Note: It would be cool to render wreckage so you can see where you've been
  */

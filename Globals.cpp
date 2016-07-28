@@ -2,7 +2,6 @@
 
 ArduboyCustom arduboy;
 
-//int FPS = 60;
 float LastUpdateTime = 0;
 float MilliPerFrame = 0;
 float DeltaTime = 0;
@@ -11,7 +10,7 @@ int StatusBlinkTime = 60;
 
 State GameState;
 State PreviousGameState;
-//StatusScreen CurrentStatusScreen;
+
 int MenuWaitTime;
 int SequenceStage = 0;
 int CurrentSector = 1;
@@ -44,5 +43,3 @@ float seconds = 60;
 int minutes = 9;
 
 float TimeToNextRandomEncounter;
-
-//RandomShipEncounter* ShipEncountered;

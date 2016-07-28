@@ -20,7 +20,6 @@ SelectionArrow::SelectionArrow( Vector2d** array, int size )
 {
   NumberOfPositions = size;
   Position = 0;
-//  Type = ArrowSelection;
   
   SelectionLocation* tmp;
   for ( int i(0); i < size; i ++ )
@@ -57,10 +56,7 @@ SelectionArrow::~SelectionArrow()
 
 void SelectionArrow::Draw()
 {
-//  if ( Type == ArrowSelection )
     arduboy.drawBitmap( CurrentSelection->Location->x, CurrentSelection->Location->y, SelectionArrow_8_8, 8, 8, 1);
-//  else if ( Type == BoxSelection )
-//    arduboy.drawRect( CurrentSelection->Location->x, CurrentSelection->Location->y, 29, 9, 1 );
 }
 
 void SelectionArrow::SelectionMoveUp()
@@ -81,14 +77,3 @@ void SelectionArrow::Enable( bool e )
 {
   _Enabled = e;
 }
-
-//void SelectionArrow::SetBoxType()
-//{
-//  this->Type = BoxSelection;
-//}
-//
-//void SelectionArrow::SetArrowType()
-//{
-//  this->Type = ArrowSelection;
-//}
-
