@@ -23,7 +23,8 @@ void setup() {
   MilliPerFrame = 1000.0f / 60.0f;
 
   arduboy.boot();
-  arduboy.display();
+  arduboy.flashlight();
+  arduboy.bootLogo();
   arduboy.initRandomSeed();
 
 #if !Debug
