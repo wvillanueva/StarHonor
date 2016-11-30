@@ -7,11 +7,9 @@
 #include "bitmaps.h"
 #include "Vector2d.h"
 
-//#define PI 3.14159265
 
 extern Arduboy2Base arduboy;
 
-//extern int FPS;
 extern float LastUpdateTime;
 extern float MilliPerFrame;
 extern float DeltaTime;
@@ -32,7 +30,6 @@ extern bool CanHail;
 extern bool RunningAway;
 
 typedef enum { Overview, Repair, Auxilary } StatusScreen;
-//extern StatusScreen CurrentStatusScreen;
 
 typedef enum { Up, UpRight, Right, DownRight, Down, DownLeft, Left, UpLeft, None } Direction;
 extern Direction DPad;
@@ -66,15 +63,5 @@ extern int BattleRepairsMax;
 
 extern float seconds;
 extern int minutes;
-
-//extern float TimeToNextRandomEncounter;
-//struct RandomShipEncounter
-//{
-//  int Attack;
-//  int Defense;
-//  Loot Prize;
-//};
-//
-//extern RandomShipEncounter* ShipEncountered;
 
 #endif

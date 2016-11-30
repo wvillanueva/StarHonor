@@ -23,7 +23,6 @@ extern Planetoid* LatestPlanetEncountered;
 void InitializePlanetsArray();
 void NewMap();
 void DeleteMap();
-//void CreateEnemyShips( int count );
 Vector2d RandomMapPosition();
 void MapLoop();
 void DrawMap();
