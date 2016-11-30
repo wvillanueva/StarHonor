@@ -136,7 +136,7 @@ bool Text::DisplayTextOverTime( char* text, int x, int y )
 
 bool Text::DisplayTextOverTime( char const* text, int x, int y )
 {
-  Text::DisplayTextOverTime( (char *) text, x, y );
+  return Text::DisplayTextOverTime( (char *) text, x, y );
 }
 
 bool Text::DisplayTextOverTimeClear( char* text, int x, int y )
